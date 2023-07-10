@@ -5,6 +5,7 @@ import useDropdown from "./dropdown"
 import { IBlog } from "./BlogCard";
 import Loader from "./Loader";
 import { getData } from "@/utils/server";
+import Link from "next/link";
 
 const Search = () => {
 
@@ -39,14 +40,20 @@ const Search = () => {
     const getSearchInfo = () => {
         if (!search) {
             return <div className="placeholder">Start Typing....</div>
-            
+
         }
         if (loading) {
             return <Loader />
         }
 
         if (searchblogs.length > 0) {
-            return searchblogs.map((item, index) => (<div className="searchItem" key={index}>{item.title}</div>))
+            return searchblogs.map((item, index) => (
+                <div className="searchItem" key={index}>
+                    <Link href={`/${item.slug}`} >
+                        {item.title}
+                    </Link>
+                </div>
+            ))
         } else {
             <div className="not-found">Not found</div>
         }
