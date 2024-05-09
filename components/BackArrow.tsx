@@ -5,10 +5,14 @@ import {IoChevronBackOutline} from "react-icons/io5"
 
 const BackArrow = () => {
 
-    const {back} = useRouter()
+    const router = useRouter()
+
+    const handleGoBack = () => {
+        router.back()
+    }
 
     return (
-        <div className="backArrow" onClick={back}>
+        <div className="backArrow" onClick={handleGoBack}>
             <IoChevronBackOutline />
         </div>
     )

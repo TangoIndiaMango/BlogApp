@@ -1,10 +1,10 @@
+"use client"
 
-import CommentCard, { IComment } from '@/components/CommentCard'
-import BlogList from '@/components/HomePage/BlogList'
-import SpecialBlog from '@/components/HomePage/SpecialBlog'
-import TopBlog from '@/components/HomePage/TopBlog'
-import TagMenu from '@/components/TagMenu'
-
+import CommentCard, { IComment } from "@/components/CommentCard";
+import BlogList from "@/components/HomePage/BlogList";
+import SpecialBlog from "@/components/HomePage/SpecialBlog";
+import TopBlog from "@/components/HomePage/TopBlog";
+import TagMenu from "@/components/TagMenu";
 
 export default function Home() {
   return (
@@ -22,5 +22,5 @@ export default function Home() {
         </section>
       </div>
     </main>
-  )
+  );
 }
