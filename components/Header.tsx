@@ -1,16 +1,30 @@
-import Link from "next/link"
-import Search from "./Search"
-import AddBlog from "./AddBlog"
+"use client";
+
+import Link from "next/link";
+import Search from "./Search";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
-    return <header>
-        <Link href="/"><div className="brand">Blogs</div></Link>
+  const pathname = usePathname();
 
-        <div className="addButton">
-            <AddBlog />
-            <Search />
-        </div>
+  return (
+    <header>
+      <Link href="/">
+        <div className="brand">Blogs</div>
+      </Link>
+
+      <div className="addButton">
+        {pathname === "/add" ? (
+          ""
+        ) : (
+          <Link href="/add" className="addblog">
+            Add Blog
+          </Link>
+        )}
+        <Search />
+      </div>
     </header>
-}
+  );
+};
 
-export default Header
+export default Header;

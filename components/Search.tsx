@@ -55,7 +55,7 @@ const Search = () => {
                 </div>
             ))
         } else {
-            <div className="not-found">Not found</div>
+           return <div className="not-found">Not found</div>
         }
 
     }

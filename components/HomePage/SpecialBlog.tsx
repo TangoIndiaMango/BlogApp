@@ -13,7 +13,7 @@ const SpecialBlog = async () => {
     }
     return (
     <div className="">
-       <h3>{specialBlog[0].blog.tag.name}</h3>
+       <h3>{specialBlog[0].blog.tag?.name}</h3>
        <SpecialCard {...specialBlog[0].blog}/>
     </div>
     )

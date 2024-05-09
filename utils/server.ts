@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const baseUrl = "https://timmie.pythonanywhere.com/blog-path/"
+// const baseUrl = "https://timmie.pythonanywhere.com/blog-path/"
+const baseUrl = "https://blogappbackend-pm33.onrender.com/blog-path/"
+
 
 export const getData = async <T>(endpoint: string):Promise<T | null> => {
     const req = await axios.get(`${baseUrl}${endpoint}`).catch(e => {
