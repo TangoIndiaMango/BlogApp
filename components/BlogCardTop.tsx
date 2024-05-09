@@ -6,7 +6,7 @@ const BlogCardTop = (blog: IBlog) => {
     return <div className={`blogCard ${blog.className ? blog.className : ""}`}>
         <div className="blogContent">
             <div className="top">
-                <div className="badge">{blog.tag.name}</div>
+                <div className="badge">{blog.tag?.name}</div>
                 <BlogCardDate {...blog}/>
             </div>
             <div className="body">
