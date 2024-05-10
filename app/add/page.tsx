@@ -1,6 +1,7 @@
+"use client";
+
 import AddBlog from "@/components/AddBlog";
 import TopBlog from "@/components/HomePage/TopBlog";
-import React from "react";
 
 type Props = {};
 
