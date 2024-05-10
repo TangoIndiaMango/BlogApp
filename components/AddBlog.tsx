@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { getData, postData } from "@/utils/server";
-import { useModal } from "./Modal";
-import ReactQuill from "react-quill";
+import { getData, postData, postFileDataToCLD } from "@/utils/server";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+// import ReactQuill from "react-quill";
+import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+import BackArrow from "./BackArrow";
 import { IBlog } from "./BlogCard";
 import { ITag } from "./TagMenu";
-import axios from "axios";
-import BackArrow from "./BackArrow";
-import { useRouter } from "next/navigation";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const AddBlog = () => {
   const [formData, setFormData] = useState<Partial<IBlog>>({
@@ -22,6 +23,7 @@ const AddBlog = () => {
   const [tags, setTags] = useState<ITag[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [ismounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const getTags = async () => {
@@ -29,6 +31,7 @@ const AddBlog = () => {
       setTags(tags);
     };
     getTags();
+    setIsMounted(true);
   }, []);
 
   const handleInputChange = (
@@ -68,56 +71,52 @@ const AddBlog = () => {
     }
   };
 
-  const postFileDataToCLD = async (file: any) => {
-    setLoading(true);
-    const url = `https://api.cloudinary.com/v1_1/aliyu-timi/image/upload`;
-
-    const res = await axios.post(url, {
-      file: file,
-      api_key: "897161839891256",
-      upload_preset: "inventory_app"
-    });
-    if (res) {
-      setLoading(false);
-    }
-
-    return res.data.secure_url;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
-    // console.log(formData);
     const { tag, cover, ...rest } = formData;
-    const reader = new FileReader();
-    reader.readAsDataURL(cover as any);
-    reader.onload = async () => {
-      // console.log(reader.result);
-      const cloudinary_resp = await postFileDataToCLD(reader.result);
-      const tag_id = tag?.id;
-      const payload = {
-        ...rest,
-        tag_id: tag_id,
-        cover: cloudinary_resp
-      };
-      const res = await postData(`blog-url`, payload);
-      if (res) {
-        console.log(res);
-        setLoading(false);
-        setFormData({
-          title: "",
-          caption: "",
-          content: "",
-          tag: null,
-          cover: undefined
-        });
-        router.push("/");
-      } else {
-        alert("An error occurred.");
-        setLoading(false);
-      }
+
+    const tag_id = tag?.id;
+    let payload = {
+      ...rest,
+      tag_id: tag_id,
+      cover: undefined
     };
+    if (cover) {
+      const reader = new FileReader();
+      reader.readAsDataURL(cover as any);
+      reader.onload = async () => {
+        // console.log(reader.result);
+        const cloudinary_resp = await postFileDataToCLD(reader.result);
+        payload = {
+          ...payload,
+          cover: cloudinary_resp
+        };
+        const res = await postData(`blog-url`, payload);
+        handlePostResponse(res);
+      };
+    } else {
+      const res = await postData(`blog-url`, payload);
+      handlePostResponse(res);
+    }
+  };
+
+  const handlePostResponse = (res: any) => {
+    if (res) {
+      setLoading(false);
+      setFormData({
+        title: "",
+        caption: "",
+        content: "",
+        tag: null,
+        cover: undefined
+      });
+      router.push("/");
+    } else {
+      alert("An error occurred.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -175,15 +174,17 @@ const AddBlog = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="input-content">
-            <label htmlFor="content">Content</label>
-            <ReactQuill
-              className="content-input"
-              value={formData.content}
-              onChange={handleContentChange}
-              placeholder="Enter your content"
-            />
-          </div>
+          {ismounted && (
+            <div className="input-content">
+              <label htmlFor="content">Content</label>
+              <ReactQuill
+                className="content-input"
+                value={formData.content}
+                onChange={handleContentChange}
+                placeholder="Enter your content"
+              />
+            </div>
+          )}
         </div>
         <div className="form-submit">
           <button type="submit" disabled={loading}>

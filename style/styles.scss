@@ -431,6 +431,10 @@ button {
         transition: 0.7s;
 
     }
+
+    &:disabled {
+        pointer-events: none;
+    }
 }
 
 .addblog {
@@ -828,9 +832,8 @@ textarea {
 
     .form-submit {
         height: auto;
-        display: flex;
-        align-items: center;
-        margin-top: 100px;
+        margin: 20px 0px;
+
 
         @media screen and (max-width: 768px) {
             margin-bottom: 50px;
@@ -880,9 +883,8 @@ textarea {
             }
         }
     }
+}
 
-
-
-
-
+.ql-container{
+    height: auto !important;
 }

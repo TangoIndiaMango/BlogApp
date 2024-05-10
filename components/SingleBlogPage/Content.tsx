@@ -7,7 +7,7 @@ import DOMPurify from "isomorphic-dompurify";
 
 const Content = (blog: IBlog) => {
   const sanitizedBlogContent = DOMPurify.sanitize(blog.content || "");
-  console.log(blog)
+
 
   return (
     <div className="single-content">

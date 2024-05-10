@@ -1,5 +1,3 @@
-
-
 import { IBlog } from "@/components/BlogCard";
 import Header from "@/components/Header";
 import Comment from "@/components/SingleBlogPage/Comment";

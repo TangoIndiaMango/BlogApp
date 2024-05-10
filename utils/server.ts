@@ -25,3 +25,17 @@ export const postData = async (endpoint: string, data:any):Promise<boolean> => {
     } 
     return false;
 }
+
+export const postFileDataToCLD = async (file: any) => {
+  
+    const url = `https://api.cloudinary.com/v1_1/aliyu-timi/image/upload`;
+
+    const res = await axios.post(url, {
+      file: file,
+      api_key: "897161839891256",
+      upload_preset: "inventory_app"
+    });
+
+
+    return res.data.secure_url;
+  };
